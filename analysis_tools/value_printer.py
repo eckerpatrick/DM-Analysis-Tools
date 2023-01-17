@@ -50,7 +50,7 @@ def get_rounded_to_significant_digit(
             exponent = -(factor - 1)
 
     if sig_digit_index is not None:
-        sig_digit_index -= exponent
+        pass
     else:
         if error:
             sig_digit_index = significant_digit_index(x=error)
