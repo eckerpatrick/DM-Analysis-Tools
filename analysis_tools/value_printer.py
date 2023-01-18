@@ -29,15 +29,18 @@ def get_rounded_to_significant_digit(
     sig_digit_index: Optional[int] = None,
 ) -> str:
     if not error:
-        if x >= 1:
-            digits_before_decimal = int(np.log10(x)) + 1
+        if abs(x) >= 1:
+            digits_before_decimal = int(np.log10(abs(x))) + 1
             x = x / (10 ** (digits_before_decimal - 1))
             exponent = digits_before_decimal - 1
         else:
-            factor = significant_digit_index(x=x)
+            factor = significant_digit_index(x=abs(x))
             x = x * 10 ** (factor - 1)
             exponent = -(factor - 1)
     else:
+        if error < 0:
+            print("Warning: Setting error to abs(error) because you gave a negative error!")
+            error = abs(error)
         if error >= 1:
             digits_before_decimal = int(np.log10(error)) + 1
             x = x / (10 ** (digits_before_decimal - 1))
@@ -55,7 +58,7 @@ def get_rounded_to_significant_digit(
         if error:
             sig_digit_index = significant_digit_index(x=error)
         else:
-            sig_digit_index = significant_digit_index(x=x)
+            sig_digit_index = significant_digit_index(x=abs(x))
 
     trim = "-" if sig_digit_index == 0 else "k"
     x_str = np.format_float_positional(

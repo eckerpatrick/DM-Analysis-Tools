@@ -20,7 +20,7 @@ repos:
     -   id: check-merge-conflict
     -   id: check-ast
     -   id: debug-statements
--   repo: https://gitlab.com/pycqa/flake8
+-   repo: https://github.com/PyCQA/flake8
     rev: "3.9.0"
     hooks:
     -   id: flake8
@@ -36,4 +36,3 @@ repos:
     -   id: codespell
         args: ["-I", "codespell.txt"]
         exclude_types: ["jupyter", "c++"]
-
