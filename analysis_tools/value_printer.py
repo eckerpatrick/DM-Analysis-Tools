@@ -77,7 +77,7 @@ def get_rounded_to_significant_digit(
             final_str = x_str
         return final_str
 
-    # todo: always round up the uncertainty
+    error += float(5 * 10 ** (-sig_digit_index - 1))
     error_str = np.format_float_positional(
         round(error, sig_digit_index),
         unique=False,
