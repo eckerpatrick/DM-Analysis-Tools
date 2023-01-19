@@ -2,3 +2,4 @@ DM_Analysis_Tools.egg-info/
 .idea
 *.pyc
 *.out
+venv*
