@@ -7,7 +7,7 @@ __all__ = [
 ]
 
 
-def significant_digit_index(x: float):
+def significant_digit_index(x: float) -> int:
     if x >= 1:
         index = int(np.log10(x))
         digit = int(x / 10**index)
@@ -16,56 +16,36 @@ def significant_digit_index(x: float):
         return -index
     else:
         a = np.array([int(d) for d in np.format_float_positional(x) if d != "."])
-        index = np.argmax(a > 0)
+        index = int(np.argmax(a > 0))
         if a[index] < 3:
             return index + 1
         return index
 
 
-# todo: Check what happens with negative numbers -> are they treated correctly
 def get_rounded_to_significant_digit(
     x: float,
     error: Optional[float] = None,
     sig_digit_index: Optional[int] = None,
 ) -> str:
-    if not error:
-        if abs(x) >= 1:
-            digits_before_decimal = int(np.log10(abs(x))) + 1
-            x = x / (10 ** (digits_before_decimal - 1))
-            exponent = digits_before_decimal - 1
-        else:
-            factor = significant_digit_index(x=abs(x))
-            x = x * 10 ** (factor - 1)
-            exponent = -(factor - 1)
-    else:
-        if error < 0:
-            print("Warning: Setting error to abs(error) because you gave a negative error!")
-            error = abs(error)
-        if error >= 1:
-            digits_before_decimal = int(np.log10(error)) + 1
-            x = x / (10 ** (digits_before_decimal - 1))
-            error = error / (10 ** (digits_before_decimal - 1))
-            exponent = digits_before_decimal - 1
-        else:
-            factor = significant_digit_index(x=error)
-            x = x * 10 ** (factor - 1)
-            error = error * 10 ** (factor - 1)
-            exponent = -(factor - 1)
+    if error and error < 0:
+        print("Warning: Setting error to abs(error) because you gave a negative error!")
+        error = abs(error)
 
-    if sig_digit_index is not None:
-        pass
-    else:
-        if error:
-            sig_digit_index = significant_digit_index(x=error)
-        else:
+    if not sig_digit_index:
+        if not error:
             sig_digit_index = significant_digit_index(x=abs(x))
+        else:
+            sig_digit_index = significant_digit_index(x=error)
 
-    trim = "-" if sig_digit_index == 0 else "k"
+    exponent = -sig_digit_index
+    x = round(x, sig_digit_index)
+    x = x / (10.0**exponent)
+
     x_str = np.format_float_positional(
-        round(x, sig_digit_index),
+        x,
         unique=False,
-        precision=abs(sig_digit_index),
-        trim=trim,
+        precision=0,
+        trim="-",
     )
     if not error:
         if exponent != 0:
@@ -76,13 +56,15 @@ def get_rounded_to_significant_digit(
         else:
             final_str = x_str
         return final_str
-    
+
     error += float(5 * 10.0 ** (-sig_digit_index - 1))
+    error = round(error, sig_digit_index)
+    error = error / (10.0**exponent)
     error_str = np.format_float_positional(
-        round(error, sig_digit_index),
+        error,
         unique=False,
-        precision=abs(sig_digit_index),
-        trim=trim,
+        precision=0,
+        trim="-",
     )
 
     if exponent != 0:

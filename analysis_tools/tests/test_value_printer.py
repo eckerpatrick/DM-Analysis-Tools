@@ -26,29 +26,80 @@ class ValuePrinterTests(unittest.TestCase):
         self.assertEqual(round(0.323, significant_digit_index(x=0.323)), 0.3)
 
     def test_significant_digit_printer_without_digit_index(self):
-        
-        self.assertEqual(r"$12.3 \pm 1.3$", get_rounded_to_significant_digit(x = 1.23456789e1, error = 1.23456789, sig_digit_index = None))   # should this not be error = 13?
-        self.assertEqual(r"$(12.3 \pm 1.3) \times 10^{-4}$", get_rounded_to_significant_digit(x = 1.23456789e-3, error = 1.23456789e-4, sig_digit_index = None))
-        self.assertEqual(r"$(0.0 \pm 1.3) \times 10^{1}$", get_rounded_to_significant_digit(x = 1.23456789e-2, error = 1.2345678e1, sig_digit_index = None))
-        self.assertEqual(r"$1234.6 \pm 1.3$", get_rounded_to_significant_digit(x = 1.23456789e3, error = 1.23456789, sig_digit_index = None))
 
-        self.assertEqual(r"$57 \pm 6$", get_rounded_to_significant_digit(x = 5.6789e1, error = 5.6789, sig_digit_index = None))
-        self.assertEqual(r"$(5.7 \pm 0.6) \times 10^{-3}$", get_rounded_to_significant_digit(x = 5.6789e-3, error = 5.6789e-4, sig_digit_index = None))
-        self.assertEqual(r"$(1 \pm 6) \times 10^{4}$", get_rounded_to_significant_digit(x = 5.6789e3, error = 5.6789e4, sig_digit_index = None))
-        self.assertEqual(r"$(0 \pm 6) \times 10^{1}$", get_rounded_to_significant_digit(x = 5.6789e-2, error = 5.678e1, sig_digit_index = None))
-        self.assertEqual(r"$5679 \pm 6$", get_rounded_to_significant_digit(x = 5.6789e3, error = 5.6789, sig_digit_index = None))
+        self.assertEqual(
+            r"$(123 \pm 13) \times 10^{-1}$",
+            get_rounded_to_significant_digit(x=1.23456789e1, error=1.23456789, sig_digit_index=None),
+        )
+        self.assertEqual(
+            r"$(123 \pm 13) \times 10^{-5}$",
+            get_rounded_to_significant_digit(x=1.23456789e-3, error=1.23456789e-4, sig_digit_index=None),
+        )
+        self.assertEqual(
+            r"$0 \pm 13$",
+            get_rounded_to_significant_digit(x=1.23456789e-2, error=1.2345678e1, sig_digit_index=None),
+        )
+        self.assertEqual(
+            r"$(12346 \pm 13) \times 10^{-1}$",
+            get_rounded_to_significant_digit(x=1.23456789e3, error=1.23456789, sig_digit_index=None),
+        )
+
+        self.assertEqual(
+            r"$57 \pm 6$",
+            get_rounded_to_significant_digit(x=5.6789e1, error=5.6789, sig_digit_index=None),
+        )
+        self.assertEqual(
+            r"$(57 \pm 6) \times 10^{-4}$",
+            get_rounded_to_significant_digit(x=5.6789e-3, error=5.6789e-4, sig_digit_index=None),
+        )
+        self.assertEqual(
+            r"$(1 \pm 6) \times 10^{4}$",
+            get_rounded_to_significant_digit(x=5.6789e3, error=5.6789e4, sig_digit_index=None),
+        )
+        self.assertEqual(
+            r"$(0 \pm 6) \times 10^{1}$",
+            get_rounded_to_significant_digit(x=5.6789e-2, error=5.678e1, sig_digit_index=None),
+        )
+        self.assertEqual(
+            r"$5679 \pm 6$",
+            get_rounded_to_significant_digit(x=5.6789e3, error=5.6789, sig_digit_index=None),
+        )
 
     def test_significant_digit_printer_with_digit_index(self):
-        self.assertEqual(r"$12.35 \pm 1.24$", get_rounded_to_significant_digit(x = 1.23456789e1, error = 1.23456789, sig_digit_index = 2))
-        self.assertEqual(r"$(1.2 \pm 0.1) \times 10^-5$", get_rounded_to_significant_digit(x = 1.23456789e-3, error = 1.23456789e-4, sig_digit_index = 5))
-        self.assertEqual(r"$(12 \pm 1235) \times 10^-2$", get_rounded_to_significant_digit(x = 1.23456789e-1, error = 1.2345678e1, sig_digit_index = 2))
-        self.assertEqual(r"$1200 \pm 0$", get_rounded_to_significant_digit(x = 1.23456789e3, error = 1.23456789, sig_digit_index = -2))
+        self.assertEqual(
+            r"$(1235 \pm 124) \times 10^{-2}$",
+            get_rounded_to_significant_digit(x=1.23456789e1, error=1.23456789, sig_digit_index=2),
+        )
+        self.assertEqual(
+            r"$(123 \pm 13) \times 10^{-5}$",
+            get_rounded_to_significant_digit(x=1.23456789e-3, error=1.23456789e-4, sig_digit_index=5),
+        )
+        self.assertEqual(
+            r"$(12 \pm 1235) \times 10^{-2}$",
+            get_rounded_to_significant_digit(x=1.23456789e-1, error=1.2345678e1, sig_digit_index=2),
+        )
+        self.assertEqual(
+            r"$(12 \pm 1) \times 10^{2}$",
+            get_rounded_to_significant_digit(x=1.23456789e3, error=1.23456789, sig_digit_index=-2),
+        )
 
-        # TODO !
-        self.assertEqual(r"$57 \pm 6$", get_rounded_to_significant_digit(x = 5.6789e1, error = 5.6789, sig_digit_index = 2))
-        self.assertEqual(r"$(5.7 \pm 0.6) \times 10^{-3}$", get_rounded_to_significant_digit(x = 5.6789e-3, error = 5.6789e-4, sig_digit_index = 5))
-        self.assertEqual(r"$(0 \pm 6) \times 10^{1}$", get_rounded_to_significant_digit(x = 5.6789e-2, error = 5.678e1, sig_digit_index = 2))
-        self.assertEqual(r"$5679 \pm 6$", get_rounded_to_significant_digit(x = 5.6789e3, error = 5.6789, sig_digit_index = 2))
+        self.assertEqual(
+            r"$(5679 \pm 568) \times 10^{-2}$",
+            get_rounded_to_significant_digit(x=5.6789e1, error=5.6789, sig_digit_index=2),
+        )
+        self.assertEqual(
+            r"$(568 \pm 57) \times 10^{-5}$",
+            get_rounded_to_significant_digit(x=5.6789e-3, error=5.6789e-4, sig_digit_index=5),
+        )
+        self.assertEqual(
+            r"$(6 \pm 5679) \times 10^{-2}$",
+            get_rounded_to_significant_digit(x=5.6789e-2, error=5.678e1, sig_digit_index=2),
+        )
+        self.assertEqual(
+            r"$(567890 \pm 568) \times 10^{-2}$",
+            get_rounded_to_significant_digit(x=5.6789e3, error=5.6789, sig_digit_index=2),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
