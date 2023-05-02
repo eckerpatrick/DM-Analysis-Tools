@@ -1,9 +1,12 @@
 from typing import Optional
 import numpy as np
+import uncertainties
+
 
 __all__ = [
     "significant_digit_index",
     "get_rounded_to_significant_digit",
+    "get_rounded_to_significant_digit_ufloat"
 ]
 
 
@@ -79,3 +82,11 @@ def get_rounded_to_significant_digit(
             b=error_str,
         )
     return final_str
+
+
+def get_rounded_to_significant_digit_ufloat(
+    x: uncertainties.core.Variable,
+    sig_digit_index: Optional[int] = None,
+) -> str:
+    assert(isinstance(x, uncertainties.core.Variable))
+    return get_rounded_to_significant_digit(x=x.nominal_value, error=x.std_dev, sig_digit_index=sig_digit_index)
