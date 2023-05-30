@@ -24,6 +24,7 @@ def find_intersections_between_interpolations(
     points: np.ndarray,
     interpolations: Tuple[Callable, Callable],
     accuracy: int = 1000,
+    debug=False,
 ) -> List[float]:
     intersections = []
     for i in range(len(points) - 1):
@@ -42,6 +43,7 @@ def find_intersections_between_interpolations(
             # Check that there are no further intersections in that range
             assert all(s == signs[index] for s in signs[index + 1 : -1])
             intersection_x = check_points[index]
-            print(f"Intersection found at x = {intersection_x}!")
+            if debug:
+                print(f"Intersection found at x = {intersection_x}!")
             intersections.append(intersection_x)
     return intersections
