@@ -1,13 +1,14 @@
 from typing import Union, Tuple, Optional
-import gammapy.stats as gstats
-import numpy as np
-import scipy.stats
-import scipy.special
+
+# import gammapy.stats as gstats
+# import numpy as np
+# import scipy.stats
+# import scipy.special
 import ROOT as root
 
 __all__ = [
     "bayes_divide",
-    "get_fc_upper_limit",
+    # "get_fc_upper_limit",
 ]
 
 
@@ -34,17 +35,17 @@ def bayes_divide(
     return b / a, g.GetErrorYlow(0), g.GetErrorYhigh(0)
 
 
-def get_fc_upper_limit(
-    n_background: float,
-    n_observed: float,
-    cl: float = 0.9,
-) -> float:
-    x_bins = np.arange(0, 50)
-    mu_bins = np.linspace(0, 15, int(15 / 0.005) + 1, endpoint=True)
-    matrix = [scipy.stats.poisson(mu + n_background).pmf(x_bins) for mu in mu_bins]
-
-    acceptance_intervals = gstats.fc_construct_acceptance_intervals_pdfs(matrix, cl)
-    lower_limit_num, upper_limit_num, _ = gstats.fc_get_limits(mu_bins, x_bins, acceptance_intervals)
-
-    upper_limit = gstats.fc_find_limit(n_observed, upper_limit_num, mu_bins)
-    return upper_limit
+# def get_fc_upper_limit(
+#    n_background: float,
+#    n_observed: float,
+#    cl: float = 0.9,
+# ) -> float:
+#    x_bins = np.arange(0, 50)
+#    mu_bins = np.linspace(0, 15, int(15 / 0.005) + 1, endpoint=True)
+#    matrix = [scipy.stats.poisson(mu + n_background).pmf(x_bins) for mu in mu_bins]
+#
+#    acceptance_intervals = gstats.fc_construct_acceptance_intervals_pdfs(matrix, cl)
+#    lower_limit_num, upper_limit_num, _ = gstats.fc_get_limits(mu_bins, x_bins, acceptance_intervals)
+#
+#    upper_limit = gstats.fc_find_limit(n_observed, upper_limit_num, mu_bins)
+#    return upper_limit
