@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=42"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "DM-Analysis-Tools"
+version = "0.1.0"
+description = "Analysis Tools for a Dark Matter Physics Analysis."
+authors = [
+    { name = "Patrick Ecker", email = "patrick.ecker@kit.edu" }
+]
+license = { text = "" }
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+]
+urls = { "Homepage" = "https://github.com/eckerpatrick/DM-Analysis-Tools" }
+
+[tool.setuptools]
+packages = { find = {} }
