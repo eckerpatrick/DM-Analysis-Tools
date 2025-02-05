@@ -23,14 +23,22 @@ def logarithmic_interpolation(
 def find_intersections_between_interpolations(
     points: np.ndarray,
     interpolations: Tuple[Callable, Callable],
-    accuracy: int = 1000,
+    accuracy: int = 2000,
+    use_log: bool = False,
     debug=False,
 ) -> List[float]:
     intersections = []
     for i in range(len(points) - 1):
-        lower, upper = points[i], points[i + 1]
-        check_points = np.linspace(lower, upper, accuracy)
         inter_1, inter_2 = interpolations
+        lower, upper = points[i], points[i + 1]
+        diff = inter_1(np.array([lower, upper])) - inter_2(np.array([lower, upper]))
+        if np.sign(diff[0]) == np.sign(diff[1]):
+            continue
+
+        if use_log:
+            check_points = np.geomspace(lower, upper, accuracy)
+        else:
+            check_points = np.linspace(lower, upper, accuracy)
         diff = inter_1(check_points) - inter_2(check_points)
 
         if all(v > 0 for v in diff) or all(v < 0 for v in diff):
