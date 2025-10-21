@@ -17,6 +17,8 @@ dependencies = [
     "pandas",
     "scipy",
     "matplotlib",
+    "b2luigi",
+    "ping3",
 ]
 urls = { "Homepage" = "https://github.com/eckerpatrick/DM-Analysis-Tools" }
 
